@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const Exercise = require('./models/Exercise');
+require('dotenv').config();
 
-mongoose.connect('mongodb+srv://jheimburge:nXdzDT3seoy8YVMa@cluster0.m5owbrn.mongodb.net/fitness-tracker?retryWrites=true&w=majority');
+
+mongoose.connect(process.env.DATABASE_URL);
 
 
 const exercisesToSeed = [

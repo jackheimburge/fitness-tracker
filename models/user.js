@@ -14,9 +14,9 @@ const userSchema = new Schema({
         lowercase: true,
         required: true
     },
-    weight: { type: Number },
     dailyData: [
         {
+            weight: { type: Number, default: null },
             date: { type: Date, default: Date.now },
             exercises: [Exercise.schema],
             foods: [Food.schema]
