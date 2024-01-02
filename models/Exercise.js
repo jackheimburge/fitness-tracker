@@ -3,7 +3,9 @@ const Schema = mongoose.Schema;
 
 const ExerciseSchema = new Schema({
     type: String,
-    caloriesPerMin: Number
+    caloriesPerMinLight: Number,
+    caloriesPerMinMid: Number,
+    caloriesPerMinHeavy: Number
 })
 
 

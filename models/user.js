@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Exercise = require('./Exercise');
+const Food = require('./Food');
 const bcrypt = require('bcrypt');
 const SALT_ROUNDS = 6;
 
@@ -12,6 +14,14 @@ const userSchema = new Schema({
         lowercase: true,
         required: true
     },
+    weight: { type: Number },
+    dailyData: [
+        {
+            date: { type: Date, default: Date.now },
+            exercises: [Exercise.schema],
+            foods: [Food.schema]
+        }
+    ],
     password: { type: String, required: true },
 }, {
     timestamps: true,
