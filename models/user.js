@@ -12,7 +12,7 @@ const userSchema = new Schema({
         lowercase: true,
         required: true
     },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
 }, {
     timestamps: true,
     toJSON: {
