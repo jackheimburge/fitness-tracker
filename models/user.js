@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Exercise = require('./Exercise');
+const UserExercise = require('./UserExercise');
 const Food = require('./Food');
 const bcrypt = require('bcrypt');
 const SALT_ROUNDS = 6;
@@ -14,11 +14,24 @@ const userSchema = new Schema({
         lowercase: true,
         required: true
     },
+    userGeneratedExercises: [UserExercise.schema],
     dailyData: [
         {
-            weight: { type: Number, default: null },
             date: { type: Date, default: Date.now },
-            exercises: [Exercise.schema],
+            weight: { type: Number, default: null },
+            exercises: [
+                {
+                    exercise: { type: Schema.Types.ObjectId, ref: 'Exercise' },
+                    minutes: Number,
+                    caloriesBurned: Number
+                },
+                {
+                    // Reference to Exercise model for pre-defined exercises
+                    userExercise: { type: Schema.Types.ObjectId, ref: 'UserExercise' },
+                    minutes: Number,
+                    caloriesBurned: Number
+                }
+            ],
             foods: [Food.schema]
         }
     ],

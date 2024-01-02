@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ExerciseSchema = new Schema({
-    type: String,
+    exercise: String,
     caloriesPerMinLight: Number,
     caloriesPerMinMid: Number,
-    caloriesPerMinHeavy: Number
+    caloriesPerMinHeavy: Number,
 })
 
 
