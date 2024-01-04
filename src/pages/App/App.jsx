@@ -18,7 +18,7 @@ export default function App() {
       setDatabaseExercises(databaseExercises);
     }
     getDatabaseExercises();
-  }, [user])
+  }, [])
 
   return (
     <main className="App">
