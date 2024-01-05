@@ -4,38 +4,27 @@ const DailyDataPage = ({ user, databaseExercises }) => {
     const [dailyData, setDailyData] = useState({
         date: new Date(),
         weight: null,
-        exercises: [
-            {
-                exercise: null,
-                minutes: 0,
-                caloriesBurned: 0,
-            },
-        ],
+        exercise: {
+            exerciseId: "",
+            minutes: 0,
+            caloriesBurned: 0
+        },
         foods: [],
     });
 
-    const addExercise = () => {
-        const newExercise = {
-            exercise: null,
-            minutes: 0,
-            caloriesBurned: 0,
-        };
 
+    const handleExerciseChange = (field, value) => {
         setDailyData((prevData) => ({
             ...prevData,
-            exercises: [...prevData.exercises, newExercise],
+            exercise: {
+                ...prevData.exercise,
+                [field]: value
+            },
         }));
     };
 
-    const handleExerciseChange = (index, field, value) => {
-        setDailyData((prevData) => {
-            const updatedExercises = [...prevData.exercises];
-            updatedExercises[index][field] = value;
-            return {
-                ...prevData,
-                exercises: updatedExercises,
-            };
-        });
+    const handleSubmit = async () => {
+        alert(dailyData);
     };
 
     if (!databaseExercises) {
@@ -43,40 +32,65 @@ const DailyDataPage = ({ user, databaseExercises }) => {
     }
 
     return (
-        <form>
-            <input name="date" type="date" />
-            <input name="weight" type="number" placeholder="weight" />
-
-            {dailyData.exercises.map((exercise, index) => (
-                <div key={index}>
-                    <select
-                        name="exercise"
-                        id={`exercise-${index}`}
-                        value={exercise.exercise || ''}
-                        onChange={(e) => handleExerciseChange(index, 'exercise', e.target.value)}
-                    >
-                        <option value="">Select an exercise</option>
-                        {databaseExercises.map((dbexercise) => (
-                            <option
-                                value={dbexercise._id}
-                                key={dbexercise._id}
-                            >
-                                {dbexercise.exercise}
-                            </option>
-                        ))}
-                    </select>
-                    <input type="number" name="minutes" placeholder="minutes" />
-                    <input type="number" name="caloriesBurned" placeholder="calories burned" />
-                </div>
-            ))}
-
-            <button onClick={() => alert(`${databaseExercises[1].exercise}, ${user.name}`)}>
-                Click me
-            </button>
-            <button type="button" onClick={addExercise}>
-                Add Exercise
-            </button>
-        </form>
+        <div>
+            <form>
+                <input name="date" type="date" value={dailyData.date}
+                    onChange={(e) =>
+                        setDailyData((prevData) => ({
+                            ...prevData,
+                            date: e.target.value,
+                        }))
+                    }
+                />
+                <input
+                    name="weight"
+                    type="number"
+                    placeholder="weight"
+                    value={dailyData.weight || ""}
+                    onChange={(e) =>
+                        setDailyData((prevData) => ({
+                            ...prevData,
+                            weight: e.target.value,
+                        }))
+                    }
+                />
+                <select
+                    name="exercise"
+                    value={dailyData.exercise.exerciseId || ""}
+                    onChange={(e) => handleExerciseChange("exerciseId", e.target.value)}
+                >
+                    <option value="">Select an exercise</option>
+                    {databaseExercises.map((dbexercise) => (
+                        <option value={dbexercise._id} key={dbexercise._id}>
+                            {dbexercise.exercise}
+                        </option>
+                    ))}
+                </select>
+                <input
+                    type="number"
+                    name="minutes"
+                    placeholder="minutes"
+                    value={dailyData.exercise.minutes || ""}
+                    onChange={(e) => handleExerciseChange("minutes", e.target.value)}
+                />
+                <input
+                    type="number"
+                    name="caloriesBurned"
+                    placeholder="calories burned"
+                    value={dailyData.exercise.caloriesBurned || ""}
+                    onChange={(e) =>
+                        handleExerciseChange("caloriesBurned", e.target.value)
+                    }
+                />
+                <button type="button" onClick={handleSubmit}>
+                    Submit
+                </button>
+            </form>
+            <p>weight: {dailyData.weight}</p>
+            <p>exerciseId: {dailyData.exercise.exerciseId}</p>
+            <p>minutes: {dailyData.exercise.minutes}</p>
+            <p>caloriesBurned: {dailyData.exercise.caloriesBurned}</p>
+        </div>
     );
 };
 
