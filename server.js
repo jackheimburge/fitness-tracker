@@ -23,6 +23,7 @@ const port = process.env.PORT || 3001;
 // API routes here, before 'catch all' route
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/exercises', require('./routes/api/exercises'));
+app.use('/api/dailyData', require('./routes/api/dailyData'));
 
 // The following 'catch all *' route is used
 // to return the index.html on all non-AJAX ==> API requests

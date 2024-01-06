@@ -1,6 +1,8 @@
 import { useState } from "react";
+import * as dailyDataAPI from '../../utilities/dailyData-api';
 
 const DailyDataPage = ({ user, databaseExercises }) => {
+    const [isUploading, setIsUploading] = useState(false);
     const [dailyData, setDailyData] = useState({
         date: new Date(),
         weight: null,
@@ -23,8 +25,11 @@ const DailyDataPage = ({ user, databaseExercises }) => {
         }));
     };
 
-    const handleSubmit = async () => {
-        alert(dailyData);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsUploading(true);
+        const addedExercise = await dailyDataAPI.addDailyData(dailyData);
+
     };
 
     if (!databaseExercises) {
