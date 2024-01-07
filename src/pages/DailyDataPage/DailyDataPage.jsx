@@ -30,6 +30,7 @@ const DailyDataPage = ({ user, databaseExercises }) => {
         setIsUploading(true);
         const addedExercise = await dailyDataAPI.addDailyData(dailyData);
 
+
     };
 
     if (!databaseExercises) {

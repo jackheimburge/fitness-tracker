@@ -15,6 +15,7 @@ const userSchema = new Schema({
         lowercase: true,
         required: true
     },
+    weight: { type: Number, required: true },
     userGeneratedExercises: [UserExercise.schema],
     dailyData: [{ type: Schema.Types.ObjectId, ref: 'DailyData' }],
     password: { type: String, required: true },

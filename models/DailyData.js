@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const User = require('../models/user');
 
 const DailyDataSchema = new Schema({
     date: { type: Date, default: Date.now },
@@ -15,8 +16,9 @@ const DailyDataSchema = new Schema({
 })
 
 
-DailyDataSchema.methods.calcCaloriesBurned = function (exercise) {
-    const weight = this.weight;
+DailyDataSchema.methods.calcCaloriesBurned = function (exercise, userId) {
+    const user = User.findById(userId);
+    const weight = user.weight;
     const minutes = exercise.minutues;
     if (weight <= 125) {
         return exercise.caloriesPerMinLight * minutes;
