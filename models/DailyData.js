@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const User = require('../models/user');
 
 const DailyDataSchema = new Schema({
     date: { type: Date, default: Date.now },
@@ -16,15 +15,22 @@ const DailyDataSchema = new Schema({
 })
 
 
-DailyDataSchema.methods.calcCaloriesBurned = function (exercise, userId) {
-    const user = User.findById(userId);
+DailyDataSchema.methods.calcCaloriesBurned = async function (exercise, userId) {
+    const User = require('../models/user');
+    const user = await User.findById(userId);
     const weight = user.weight;
-    const minutes = exercise.minutues;
+    console.log('exercise=', exercise)
+    console.log('weight:', weight)
+    const minutes = this.exercises[0].minutes;
+    console.log('minutes:', minutes)
     if (weight <= 125) {
+        console.log('calories burned:', exercise.caloriesPerMinLight * minutes)
         return exercise.caloriesPerMinLight * minutes;
     } else if (weight > 125 && weight < 200) {
+        console.log('calories burned:', exercise.caloriesPerMinMid * minutes)
         return exercise.caloriesPerMinMid * minutes;
     } else {
+        console.log('calories burned:', exercise.caloriesPerMinHeavy * minutes)
         return exercise.caloriesPerMinHeavy * minutes;
     }
 }

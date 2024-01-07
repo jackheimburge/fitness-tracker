@@ -10,7 +10,7 @@ async function add(req, res) {
         const newDailyData = new DailyData({
             date: req.body.date,
             weight: req.body.weight,
-            exercise: [
+            exercises: [
                 {
                     exercise: req.body.exercise.exerciseId,
                     minutes: req.body.exercise.minutes,
@@ -21,15 +21,13 @@ async function add(req, res) {
 
         // Calculate calories burned and update the newDailyData
         const exercise = await Exercise.findById(req.body.exercise.exerciseId);
-        console.log(exercise)
         if (exercise) {
-            const caloriesBurned = newDailyData.calcCaloriesBurned(exercise, userId);
-            console.log(caloriesBurned)
+            const caloriesBurned = await newDailyData.calcCaloriesBurned(exercise, userId);
+            console.log(caloriesBurned, 'caloriesBurned')
         }
 
         // Add the newDailyData to the user's dailyData array
         user.dailyData.push(newDailyData);
-        console.log(user.dailyData)
 
         // Save the updated user
         await user.save();
