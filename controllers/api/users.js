@@ -11,6 +11,8 @@ module.exports = {
 async function create(req, res) {
     try {
         const user = await User.create(req.body);
+        user.lastSignInDate = new Date();
+        user.save();
         const token = createJWT(user);
         res.json(token);
     } catch (err) {
@@ -24,6 +26,8 @@ async function login(req, res) {
         if (!user) throw new Error();
         const match = await bcrypt.compare(req.body.password, user.password);
         if (!match) throw new Error();
+        user.lastSignInDate = new Date();
+        user.save();
         const token = createJWT(user);
         res.json(token);
     } catch (err) {
