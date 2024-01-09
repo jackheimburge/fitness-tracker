@@ -1,6 +1,8 @@
 const User = require('../../models/user');
 const Exercise = require('../../models/Exercise');
 const DailyData = require('../../models/DailyData');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 async function add(req, res) {
     console.log('CONTROLLER REACHED')
@@ -10,19 +12,13 @@ async function add(req, res) {
         const newDailyData = new DailyData({
             date: req.body.date,
             weight: req.body.weight,
-            exercises: [
-                {
-                    exercise: req.body.exercise.exerciseId,
-                    minutes: req.body.exercise.minutes,
-                    caloriesBurned: 0, // Placeholder, will be updated below
-                },
-            ],
+            exercises: [{ type: Schema.Types.ObjectId, ref: 'DailyExercise' }],
         });
 
         // Calculate calories burned and update the newDailyData
         const exercise = await Exercise.findById(req.body.exercise.exerciseId);
         if (exercise) {
-            const caloriesBurned = await newDailyData.calcCaloriesBurned(exercise, userId);
+            const caloriesBurned = await newDailyData.calcCaloriesBurned(exercise, userId, req.body);
             console.log(caloriesBurned, 'caloriesBurned')
         }
 

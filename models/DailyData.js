@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Exercise = require('../models/Exercise')
 
 const DailyDataSchema = new Schema({
     date: { type: Date, default: Date.now },
@@ -15,25 +16,22 @@ const DailyDataSchema = new Schema({
 })
 
 
-DailyDataSchema.methods.calcCaloriesBurned = async function (exercise, userId) {
+DailyDataSchema.methods.calcCaloriesBurned = async function (exercise, userId, newDailyData) {
     const User = require('../models/user');
     const user = await User.findById(userId);
+    const minutes = newDailyData.exercise.minutes;
+    console.log('newDailyData.minutes=', newDailyData)
+    console.log('this=', this)
+
     const weight = user.weight;
-    console.log('exercise=', exercise)
-    console.log('weight:', weight)
-    const minutes = this.exercises[0].minutes;
-    console.log('minutes:', minutes)
     if (weight <= 125) {
-        console.log('calories burned:', exercise.caloriesPerMinLight * minutes)
         return exercise.caloriesPerMinLight * minutes;
     } else if (weight > 125 && weight < 200) {
-        console.log('calories burned:', exercise.caloriesPerMinMid * minutes)
         return exercise.caloriesPerMinMid * minutes;
     } else {
-        console.log('calories burned:', exercise.caloriesPerMinHeavy * minutes)
         return exercise.caloriesPerMinHeavy * minutes;
     }
-}
+};
 
 module.exports = mongoose.model('DailyData', DailyDataSchema);
 
